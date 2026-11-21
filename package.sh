@@ -4,14 +4,14 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ZIP="${1:-$ROOT/../hideSceneport_module.zip}"
 
-if [[ ! -f "$ROOT/system/bin/hideport_loader" ]]; then
-    echo "Missing executable: $ROOT/system/bin/hideport_loader" >&2
+if [[ ! -f "$ROOT/bin/hideport_loader" ]]; then
+    echo "Missing executable: $ROOT/bin/hideport_loader" >&2
     echo "Run ./build.sh first." >&2
     exit 1
 fi
 
-if [[ ! -f "$ROOT/system/bin/hideport.bpf.o" ]]; then
-    echo "Missing BPF object: $ROOT/system/bin/hideport.bpf.o" >&2
+if [[ ! -f "$ROOT/bin/hideport.bpf.o" ]]; then
+    echo "Missing BPF object: $ROOT/bin/hideport.bpf.o" >&2
     echo "Run ./build.sh first." >&2
     exit 1
 fi
@@ -47,7 +47,7 @@ fi
         customize.sh
         uninstall.sh
         service.d
-        system
+        bin
     )
     if [[ -f kernel_btf.sha256 ]]; then
         files+=(kernel_btf.sha256)

@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC="$ROOT/src"
-OUT="$ROOT/system/bin"
+OUT="$ROOT/bin"
 
 ANDROID_API="${ANDROID_API:-26}"
 ANDROID_NDK="${ANDROID_NDK:-${ANDROID_NDK_HOME:-}}"

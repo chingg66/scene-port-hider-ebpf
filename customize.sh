@@ -71,5 +71,5 @@ set_permissions() {
     set_perm "$MODPATH/hideport_start.sh" 0 0 0755
     set_perm "$MODPATH/hide_scene_port.sh" 0 0 0755
     set_perm "$MODPATH/service.d/hide_scene_port.sh" 0 0 0755
-    set_perm "$MODPATH/system/bin/hideport_loader" 0 0 0755
+    set_perm "$MODPATH/bin/hideport_loader" 0 0 0755
 }

@@ -2,7 +2,7 @@
 
 MODDIR=${0%/*}
 CONF="$MODDIR/hideport.conf"
-LOADER="$MODDIR/system/bin/hideport_loader"
+LOADER="$MODDIR/bin/hideport_loader"
 LOG="$MODDIR/hideport.log"
 PIDFILE="/dev/hideport_loader.pid"
 LOCKDIR="/dev/hideport_loader.lock"
