@@ -20,10 +20,14 @@ log_msg() {
 }
 
 is_running() {
-    [ -f "$PIDFILE" ] || return 1
     local pid
-    pid="$(cat "$PIDFILE" 2>/dev/null)"
-    [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null
+    if [ -f "$PIDFILE" ]; then
+        pid="$(cat "$PIDFILE" 2>/dev/null)"
+        if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+            return 0
+        fi
+    fi
+    pidof hideport_loader >/dev/null 2>&1
 }
 
 if ! mkdir "$LOCKDIR" 2>/dev/null; then
@@ -38,7 +42,8 @@ if ! mkdir "$LOCKDIR" 2>/dev/null; then
 fi
 
 cleanup_lock() {
-    rmdir "$LOCKDIR" 2>/dev/null
+    # Keep the lock while a loader is alive so a second boot-stage start bails out.
+    is_running || rmdir "$LOCKDIR" 2>/dev/null
 }
 
 trap cleanup_lock EXIT INT TERM
