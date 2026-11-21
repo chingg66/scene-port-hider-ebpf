@@ -3,7 +3,9 @@
 #include <bpf/bpf.h>
 #include <bpf/libbpf.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <signal.h>
+#include <sys/file.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -242,6 +244,19 @@ int main(int argc, char **argv)
     struct hideport_bpf *skel = NULL;
     struct bpf_link *link = NULL;
     int err;
+
+    /*
+     * Single-instance guard. Boot scripts may run from different mount/PID
+     * namespaces, so rely on a kernel-level flock on a shared path instead of
+     * pid file heuristics.
+     */
+    int lock_fd = open("/data/adb/hideport_loader.lockfile", O_CREAT | O_RDWR, 0600);
+    if (lock_fd >= 0) {
+        if (flock(lock_fd, LOCK_EX | LOCK_NB) != 0) {
+            fprintf(stderr, "another hideport_loader instance is active, exiting\n");
+            return 0;
+        }
+    }
 
     err = parse_args(argc, argv, &cfg);
     if (err) {
