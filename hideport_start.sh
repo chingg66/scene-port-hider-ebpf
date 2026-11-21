@@ -4,8 +4,8 @@ MODDIR=${0%/*}
 CONF="$MODDIR/hideport.conf"
 LOADER="$MODDIR/bin/hideport_loader"
 LOG="$MODDIR/hideport.log"
-PIDFILE="/dev/hideport_loader.pid"
-LOCKDIR="/dev/hideport_loader.lock"
+PIDFILE="/data/adb/hideport_loader.pid"
+LOCKDIR="/data/adb/hideport_loader.lock"
 
 PKG="com.omarea.vtools"
 PORTS="8788 8765"
@@ -27,7 +27,10 @@ is_running() {
             return 0
         fi
     fi
-    pidof hideport_loader >/dev/null 2>&1
+    if command -v pidof >/dev/null 2>&1; then
+        pidof hideport_loader >/dev/null 2>&1 && return 0
+    fi
+    return 1
 }
 
 if ! mkdir "$LOCKDIR" 2>/dev/null; then
